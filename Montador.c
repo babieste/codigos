@@ -23,6 +23,48 @@ typedef struct { //EQUs
     int valor;
 } equ;
 
+int LimpaArgumento(char *token){ //Função que retira os colchetes, indicadores e vírgula se tiver no argumento. Retorna se o argumento é de um byte ou dois.
+    const char virgula = ',';
+    const char colchete_abre = '[';
+    const char colchete_fecha = ']';
+    const char indicador = 'A';
+    int DoisBytes = 0;
+    int i;
+
+    if(strstr(*token, virgula)!=NULL){ //Verifica a existência de vírgula, e a remove
+        DoisBytes = 1;
+        for(i = strstr(*token, virgula); i <= sizeof(*token); i++){
+            token[i] = token[i+1];
+        }
+    }
+    if(strstr(*token, colchete_abre)!=NULL){ //Colchetes
+        for(i = strstr(token, colchete_abre); i <= sizeof(*token); i++)
+            token[i] = token[i+1];
+        for(i = strstr(*token, colchete_fecha); i <= sizeof(*token); i++)
+            token[i] = token[i+1];
+    }
+    if(strstr(*token, indicador)!=NULL){//Indicador
+        for(i = strstr(*token, indicador); i <= sizeof(*token); i++){
+            token[i] = token[i+1];
+        }
+    }
+    return DoisBytes;
+}
+
+int LeEQU(char *token, equ equ[], int m){
+    int i;
+    for(i = 0; i <= m; i++){
+        if (strcmp(equ[i].nome, *token)==0);
+            return equ[i].valor;
+    }
+    printf("\Rotulo %s nao encontrado", token);
+}
+
+
+char TransformaEmOpcode(char *token){
+    //Precisa saber qual é o fucking argumento
+}
+
 //-----------------------------------------FUNÇÃO PRINCIPAL-----------------------------------------------------------
 int main () {
     if((entrada = fopen("entrada.txt", "rt")) == NULL){
@@ -41,15 +83,15 @@ int main () {
     equ equ[101];
     char aux[101]; /*Armazena a linha de código a ser lida*/
     char *token;
+    int DoisBytes;
 
     //Variáveis temporárias para salvar no EQU
     char carac;
     int num;
 
+    //Mnemônicos
+    char mnemonico[]= "#MOV#ADD#SUB#CMP#JMP#JC#JNC#JZ#JNZ#JBE#JA#CALL";
     char quebra[]=" ,\n\t";
-    char mnemonicos[]="/MOV/ADD/SUB/CMP/JMP/JC/JNC/JZ/JNZ/JBE/JA/CALL/RET/HLT/INC/DEC/";
-    char doisBytes[]="/MOV/ADD/SUB/CMP/JMP/JC/JNC/JZ/JNZ/JBE/JA/CALL/";
-    char umByte[]="/INC/DEC/RET/HLT/";
 
     int n = 0 /*Índice do rótulo*/, m = 0/*Contador de EQUs*/, linha = 1;
 
@@ -79,7 +121,18 @@ int main () {
         else { //Se não é RÓTULO nem EQU, então é um comando ou argumento de comando(PARTE 2)
             token = strtok(aux," ");
             while (token) {
+                if(strstr(token, mnemonico)==NULL){ //Se não é um comando, é um argumento
+                    DoisBytes = LimpaArgumento(token);
+                    if (DoisBytes == 1)
+                        linha = linha+2; //Pula duas linhas porque são dois argumentos por linha
+                    if (isalpha(*token)!=0){ //Se é caracter, então um EQU foi utilizado
+                        *token = LeEQU(*token, equ, m);
+                        fputs(*token, saida);
+                        fputs(quebra, saida);
+                        *token = strtok(NULL, " ");  //Nova linha
+                    }
 
+                }
             }
         }
     linha++;
@@ -88,5 +141,3 @@ int main () {
     fclose(entrada);
     fclose(saida);
 }
-
-
