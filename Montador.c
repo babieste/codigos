@@ -1,7 +1,7 @@
 //Bárbara Este Fernandez
 //RA: 161025901
 
-//Trabalho parcial - Montador
+//Trabalho completo
 
 #include <stdio.h>
 #include <stdlib.h>
@@ -57,12 +57,53 @@ int LeEQU(char *token, equ equ[], int m){
         if (strcmp(equ[i].nome, *token)==0);
             return equ[i].valor;
     }
-    printf("\Rotulo %s nao encontrado", token);
+    printf("\nRotulo %s nao encontrado", token);
 }
 
 
-char TransformaEmOpcode(char *token){
-    //Precisa saber qual é o fucking argumento
+char TransformaEmOpcode(char *token, char argumento[]){ //Transforma o mnemônico em opcode
+    if(strcmp(*token, "MOV")==0){
+        if(argumento[0]=='A' && (strstr(argumento,'[')!=NULL))
+            return "a0h";
+        else if (argumento[0] == 'A')
+            return "b0h";
+        else
+            return "a2h";
+    }
+    else if(strcmp(*token, "ADD")==0){
+        if(strstr(argumento, '[')!=NULL)
+            return "02h";
+        else
+            return "04h";
+    }
+    else if(strcmp(*token, "SUB")==0){
+        if(strstr(argumento, '[')!=NULL)
+            return "2ah";
+        else
+            return "2ch";
+    }
+    else if(strcmp(*token, "CMP")==0){
+        if(strstr(argumento, '[')!=NULL)
+            return "3ah";
+        else
+            return "3ch";
+    }
+    else if(strcmp(*token, "JMP")==0)
+        return "ebh";
+    else if(strcmp(*token, "JC")==0)
+        return "72h";
+    else if(strcmp(*token, "JNC")==0)
+        return "73h";
+    else if(strcmp(*token, "JZ")==0)
+        return "74h";
+    else if(strcmp(*token, "JNZ")==0)
+        return "75h";
+    else if(strcmp(*token, "JBE")==0)
+        return "76h";
+    else if(strcmp(*token, "JA")==0)
+        return "77h";
+    else
+        printf("\nO comando %s eh invalido", token);
 }
 
 //-----------------------------------------FUNÇÃO PRINCIPAL-----------------------------------------------------------
@@ -83,20 +124,22 @@ int main () {
     equ equ[101];
     char aux[101]; /*Armazena a linha de código a ser lida*/
     char *token;
+    char opcode[3];
     int DoisBytes;
 
     //Variáveis temporárias para salvar no EQU
     char carac;
+    char argumento;
     int num;
 
     //Mnemônicos
     char mnemonico[]= "#MOV#ADD#SUB#CMP#JMP#JC#JNC#JZ#JNZ#JBE#JA#CALL";
-    char quebra[]=" ,\n\t";
+    char quebra[]="\n";
 
     int n = 0 /*Índice do rótulo*/, m = 0/*Contador de EQUs*/, linha = 1;
 
     while (fgets(aux, sizeof(aux), entrada) != NULL) {
-        if (!aux[0]){ //Se o primeiro índice da linha não é nulo, é porque é um rótulo ou um EQU (PARTE 1)
+        if (aux[0]!=" "){ //Se o primeiro índice da linha não é nulo, é porque é um rótulo ou um EQU (PARTE 1)
             *token = strtok(aux, " "); //Separa o rótulo da frase inteira
             *token = toupper(*token);
 
@@ -122,6 +165,7 @@ int main () {
             token = strtok(aux," ");
             while (token) {
                 if(strstr(token, mnemonico)==NULL){ //Se não é um comando, é um argumento
+                    strcpy(argumento, *token);
                     DoisBytes = LimpaArgumento(token);
                     if (DoisBytes == 1)
                         linha = linha+2; //Pula duas linhas porque são dois argumentos por linha
@@ -133,11 +177,16 @@ int main () {
                     }
 
                 }
+                else{ //Coloca o comando no arquivo de saida
+                    strcpy(opcode, TransformaEmOpcode(*token, argumento));
+                    fputs(argumento, saida);
+                    fputs(quebra, saida);
+                    linha++;
+                    *token = strtok(NULL, " ");
+                }
             }
         }
-    linha++;
     }
-
     fclose(entrada);
     fclose(saida);
 }
