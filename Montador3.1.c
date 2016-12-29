@@ -9,6 +9,8 @@
 #include <ctype.h>
 #include <string.h>
 
+#include <locale.h>
+
 //Inicialização dos arquivos:
 FILE *entrada;
 FILE *saida;
@@ -20,12 +22,15 @@ typedef struct { //EQUs
 
 
 int LimpaArgumento(char *token){ //Função que retira os colchetes, indicadores e vírgula se tiver no argumento. Retorna se o argumento é de um byte ou dois.
+	printf("\n\tEntrou na função LimpaArgumento:");
     int DoisBytes = 0;
     int i, j;
     
-    printf("\n\tEntrou na funcao LimpaArgumento");
-    if(strchr(token, ",")!=NULL)
+    if(strchr(token, ",")!=NULL){
+    	printf("\nA função possui dois bytes!");
     	DoisBytes = 1;
+	}
+    	
 	
 	for(i = 0; i < strlen(token); i++){
 		if(token[i] == ',' || token[i] == '[' || token[i] == ']' || token[i] == 'A'){
@@ -38,23 +43,24 @@ int LimpaArgumento(char *token){ //Função que retira os colchetes, indicadores e
     return DoisBytes;
 }
 
-char LeEQU(char *token, equ equ[], int m){
-	printf("\n\tEntrou na funcao LeEQU");
+int LeEQU(char *token, equ equ[], int m){
+	printf("\n\tEntrou na função LeEQU:");
     int i;
     
     for(i = 0; i < m; i++){
-        if (strcmp(equ[i].nome, token)==0);
-        printf("\n\tValor do EQU %s = %s", token, equ[i].valor);
+        if (strcmp(equ[i].nome, token)==0) {
+        	printf("\n\tValor do EQU %s = %d", token, equ[i].valor);
             return equ[i].valor;
+		} 	
     }
-    printf("\nEQU %s nao encontrado", token);
+    printf("\n\tEQU %s não encontrado", token);
     getch();
     exit(1);
 }
 
 
 char TransformaEmOpcode(char *token, char comando[], char *opcode){ //Transforma o mnemônico em opcode
-	printf("\n\tEntrou na funcao TransformaEmOpcode");
+	printf("\n\tEntrou na função TransformaEmOpcode:");
     if(strcmp(comando, "MOV")==0){
         if(token[0]=='A' && (strchr(token, "[")!=NULL))
             strcpy(opcode, "a0h");
@@ -87,6 +93,8 @@ char TransformaEmOpcode(char *token, char comando[], char *opcode){ //Transforma
 
 //-----------------------------------------FUNÇÃO PRINCIPAL-----------------------------------------------------------
 int main () {
+	
+	setlocale(LC_ALL,"portuguese");
     //Variáveis
     equ equ[101];
     char aux[101]; /*Armazena a linha de código a ser lida*/
@@ -96,7 +104,7 @@ int main () {
     char argumento[101];
     int DoisBytes;
     char carac[101];
-    int num;
+    int num, i, retorno;
     int linha = 1;
     int m = 0 /*Contador de EQUs*/;
 
@@ -105,16 +113,11 @@ int main () {
 
     //Verificação dos arquivos
     if((entrada = fopen("entrada.txt", "rt")) == NULL){
-        printf("\nErro na inicializacao do arquivo de mnemonicos.");
-        getch();
-        exit(1);
+        printf("\nErro na inicializacao do arquivo de mnemonicos."); getch(); exit(1);
     }
     if((saida = fopen("saida.txt", "wt")) == NULL){
-        printf("\nErro na abertura do arquivo de opcodes.");
-        getch();
-        exit(1);
+        printf("\nErro na abertura do arquivo de opcodes."); getch(); exit(1);
     }
-    
     
     rewind(entrada);
 
@@ -126,53 +129,58 @@ int main () {
         while (token != NULL){
         	printf("\nToken: %s", token);
             if(aux[0]!=' '){ //Se o primeiro indice da linha não é um espaço em branco, é um EQU (PARTE 1)
+            	printf("\nEntrou para a condição de ser EQU:");
                 if (atoi(token)!=0) { //Se é diferente de zero é porque é o valor de um EQU
-                	printf("\nEntrou na condicao de ser numero");
+                	printf("\nÉ um valor de EQU");
                 	num = atoi(token);
-                	//----------------------------------NÃO CONSIGO PASSAR O VALOR PARA O EQU---------------------------------------------
                 	equ[m].valor = num;
-                	
+                	printf(": %d", equ[m].valor);
 				}    
                 else { 	//É o nome da EQU
                     strcpy(carac, token);
                     if (strcmp(token,"EQU")!=0) { //Se é uma palavra mas não é EQU, é o nome da EQU
+                    	printf("\nÉ o nome da EQU");
                         strcpy(equ[m].nome, carac);
+                        printf(": %s", equ[m].nome);
                     }
                 }
-                printf("\nEQU[%d] salva: \n\tNome: %s\n\tValor:", m, equ[m].nome, equ[m].valor); 
             }
             else { //Se não é EQU, então é um comando ou argumento de comando (PARTE 2)
-            	printf("\n\tLINHA %d", linha);
+            	printf("\nEntrou na condição de ser comando ou argumento:");
                 if(strstr(mnemonico, token)==NULL){ //Se não é um comando, é um argumento
-                	printf("\nToken: %s", token);
+                	printf("\nArgumento sujo: %s", token);
                     TransformaEmOpcode(token, comando, opcode);
                     DoisBytes = LimpaArgumento(token); //Limpa o argumento, para ficar só com o seu valor
-                    printf("\nValor do Token: %s", token);
+                    printf("\nArgumento limpo: %s", token);
                     if (DoisBytes == 1)
                         linha = linha+2; //Pula duas linhas porque são dois argumentos por linha
                     else
                     	linha++;
                     if (isalpha(*token)!=0){ //Se é caracter, então um EQU foi utilizado
+                    	printf("\nUm EQU foi utilizado! (%s)", token);
+                    	//----------------------------------NÃO ESTÁ RETORNANDO O VALOR DO EQU----------------------------
                         *token = LeEQU(token, equ, m);
-                        fseek(saida, 0, SEEK_END);
-                        fputs(opcode, saida);
-                        fputc('\n', saida);
-                        fputs(token, saida);
-                        fputc('\n',saida);
                     }
+                    fseek(saida, 0, SEEK_END);
+                    fputs(opcode, saida);
+                    fputc('\n', saida);
+                    fputs(token, saida);
+                    fputc('\n',saida);
 
                 }
                 else{ //Guarda o comando para ser usado na leitura do argumento
-                	printf("\nToken: %s", token);
+                	printf("\nComando: %s", token);
                 	strcpy(comando, token);
                 }
             }
-            printf("\nTERMINOU UM TOKEN\n\n\n");
         token = strtok(NULL, " "); //Nova linha
-        
-        } /*while (token != NULL)*/ 
-    m++;
+        } /*while (token != NULL)*/
+        printf("\n\nNOVA LINHA\n");
+        m++;
     } /*while(fgets(aux, 100, entrada) != EOF)*/
+    printf("\nEQUs:");
+    for(i = 0; i < m; i++)
+    	printf("\n%s EQU %d", equ[i].nome, equ[i].valor);
     fclose(entrada);
     fclose(saida);
 }
