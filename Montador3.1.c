@@ -21,7 +21,7 @@ typedef struct { //EQUs
 } equ;
 
 
-int LimpaArgumento(char *token){ //Função que retira os colchetes, indicadores e vírgula se tiver no argumento. Retorna se o argumento é de um byte ou dois.
+void LimpaArgumento(char *token){ //Função que retira os colchetes, indicadores e vírgula se tiver no argumento. Retorna se o argumento é de um byte ou dois.
 	printf("\n\tEntrou na função LimpaArgumento:");
     int DoisBytes = 0;
     int i, j;
@@ -40,7 +40,6 @@ int LimpaArgumento(char *token){ //Função que retira os colchetes, indicadores e
 			i--;
 		}	
 	}
-    return DoisBytes;
 }
 
 int LeEQU(char *token, equ equ[], int m){
@@ -104,7 +103,7 @@ int main () {
     char argumento[101];
     int DoisBytes;
     char carac[101];
-    int num, i, retorno;
+    int valor, i, retorno;
     int linha = 1;
     int m = 0 /*Contador de EQUs*/;
 
@@ -131,43 +130,52 @@ int main () {
             if(aux[0]!=' '){ //Se o primeiro indice da linha não é um espaço em branco, é um EQU (PARTE 1)
             	printf("\nEntrou para a condição de ser EQU:");
                 if (atoi(token)!=0) { //Se é diferente de zero é porque é o valor de um EQU
-                	printf("\nÉ um valor de EQU");
-                	num = atoi(token);
-                	equ[m].valor = num;
-                	printf(": %d", equ[m].valor);
+                	equ[m].valor = atoi(token);
+                	
+                	printf("\nÉ um valor de EQU: %d", equ[m].valor);
 				}    
                 else { 	//É o nome da EQU
                     strcpy(carac, token);
                     if (strcmp(token,"EQU")!=0) { //Se é uma palavra mas não é EQU, é o nome da EQU
-                    	printf("\nÉ o nome da EQU");
                         strcpy(equ[m].nome, carac);
-                        printf(": %s", equ[m].nome);
+                        printf("\nÉ o nome da EQU: %s", equ[m].nome);
                     }
                 }
             }
+            
+            
             else { //Se não é EQU, então é um comando ou argumento de comando (PARTE 2)
             	printf("\nEntrou na condição de ser comando ou argumento:");
                 if(strstr(mnemonico, token)==NULL){ //Se não é um comando, é um argumento
                 	printf("\nArgumento sujo: %s", token);
+                	
+                    LimpaArgumento(token);
                     TransformaEmOpcode(token, comando, opcode);
-                    DoisBytes = LimpaArgumento(token); //Limpa o argumento, para ficar só com o seu valor
+                    
                     printf("\nArgumento limpo: %s", token);
-                    if (DoisBytes == 1)
-                        linha = linha+2; //Pula duas linhas porque são dois argumentos por linha
-                    else
-                    	linha++;
                     if (isalpha(*token)!=0){ //Se é caracter, então um EQU foi utilizado
                     	printf("\nUm EQU foi utilizado! (%s)", token);
-                    	//----------------------------------NÃO ESTÁ RETORNANDO O VALOR DO EQU----------------------------
-                        *token = LeEQU(token, equ, m);
+                        valor = LeEQU(token, equ, m);
+                        printf("\nValor: %d", valor);
                     }
-                    fseek(saida, 0, SEEK_END);
+                    else {
+                    	valor = atoi(token);
+                    	printf("\nValor direto: %d", valor);
+					}
+                    
+                    printf("\nSalvando arquivos...");
+					fseek(saida, 0, SEEK_END);
                     fputs(opcode, saida);
+                    printf("\nSalvou o opcode...");
                     fputc('\n', saida);
-                    fputs(token, saida);
+                    //-------------------------------------------------------------------------------------------------------------
+                    fputs(valor, saida);
+                    printf("\nSalvou o valor...");
                     fputc('\n',saida);
-
+                    
+                    printf("\nArquivos salvos!");
                 }
+                
                 else{ //Guarda o comando para ser usado na leitura do argumento
                 	printf("\nComando: %s", token);
                 	strcpy(comando, token);
@@ -180,7 +188,8 @@ int main () {
     } /*while(fgets(aux, 100, entrada) != EOF)*/
     printf("\nEQUs:");
     for(i = 0; i < m; i++)
-    	printf("\n%s EQU %d", equ[i].nome, equ[i].valor);
+    	if (equ[i].valor != 0)
+    		printf("\n%s EQU %d", equ[i].nome, equ[i].valor);
     fclose(entrada);
     fclose(saida);
 }
