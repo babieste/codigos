@@ -38,23 +38,22 @@ void calcula_mem(char aux[], int *mem){
 	if( strstr("RET#HLT", token) != NULL){
     	*mem = *mem + 1;
 	}
-    else if( strstr("MOV#ADD#SUB#CMP#JMP#JC#JNC#JZ#JNZ#JBE#JA#CALL", token) != NULL){
-    	
-    	
+    else if(strstr("MOV#ADD#SUB#CMP#JMP#JC#JNC#JZ#JNZ#JBE#JA#CALL", token) != NULL){
     	
     	token = strtok(NULL, " ,\n"); /*Passa para o primeiro argumento*/
+    	
     	if ((strcmp("B", token)) == 0 || (strcmp("[B]", token)) == 0) {
     		*mem = *mem + 1;
 		}
 		else {
 			token = strtok(NULL, " ,\n"); /*Passa para o segundo argumento*/
-			printf("x%sx\n ", token);
+			//printf("x%sx\n ", token);
 			if(token == NULL) {
 				*mem = *mem + 2;
 				return;
 			}
 			
-			if ((strcmp("B", token)) == 0 || (strcmp("[B]", token)) == 0){
+			if (strcmp("B", token) == 0 || strcmp("[B]", token) == 0){
 				*mem = *mem + 1;
 			} 
 			else {
@@ -105,7 +104,7 @@ void le_rotulo(rotulos rot[], char aux[], int *nr, int mem){
 
 
 
-int procura_rotulo(rotulos rot[], char nome, int nr, int linha){
+int procura_rotulo(rotulos rot[], char nome[], int nr, int linha){
 	int i;
 	for(i = 0; i < nr; i++){
 		if(strcmp(rot[i].nome, nome) == 0){
@@ -121,18 +120,35 @@ int procura_rotulo(rotulos rot[], char nome, int nr, int linha){
 
 int transforma_opcode(char aux[], char *opcode) {
 	char *token;
+	int i, j;
+	
 	
 	if(aux[0] != ' ') { /*Se possui um rótulo no início, ignora-o*/
 		token = strtok(NULL, " \n");
 	}
 	
 	token = strtok(NULL, " \n"); 
-	if (token == NULL) return "oi"; /*Se não há mnemônico na linha, sai da função*/
+	if (token == NULL) return -1; /*Se não há mnemônico na linha, sai da função*/
 	printf("MNEMÔNICO: %s", token);
+	
 	if (strcmp(token, "MOV") == 0) {
 		token = strtok(NULL, ", \n"); /*Passa para o primeiro operador*/
 		if((strcmp(token, "[A]") != 0) || (strcmp(token, "[B]") != 0)) { /*Se o operador não é [A] ou [B]*/
 			//verificar se é número ou rótulo
+			if(strchr(token, '[') != NULL) { /*Se o operador tem colchetes, retira-os*/
+			
+				for(i = 0; i < strlen(token); i++){
+					if (token[i] == '[' || token[i] == ']') {
+						for(j = i; j < strlen(token); j++){
+							token[j] = token[j+1];
+						}
+						i--;
+					}	
+				}
+				
+				printf("token sem colchete: %s", token);
+			}
+			
 		}
 	}
 }
