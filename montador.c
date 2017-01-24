@@ -118,49 +118,188 @@ int procura_rotulo(rotulos rot[], char nome[], int nr, int linha){
 
 
 
-int transforma_opcode(char aux[], char *opcode) {
-	char *token;
-	int i, j;
+int transforma_opcode(char aux[], char *opcode, rotulos rot[], int nr, int linha) {
+	char *token, mnemonico[5], op1[15], op2[15];
+	int i, j, valor;
 	
+	token = strtok(aux, " \n"); 
 	
 	if(aux[0] != ' ') { /*Se possui um rótulo no início, ignora-o*/
 		token = strtok(NULL, " \n");
 	}
 	
-	token = strtok(NULL, " \n"); 
 	if (token == NULL) return -1; /*Se não há mnemônico na linha, sai da função*/
-	printf("MNEMÔNICO: %s", token);
+	strcpy(mnemonico,token);
+	if (strcmp(mnemonico,"EQU")==0) return -1; /*Se for EQU, sai da função*/
 	
-	if (strcmp(token, "MOV") == 0) {
+	printf("\nMNEMÔNICO: %s", mnemonico);
+	
+	// se for RET OU HLT, passar o codigo p/ o opcode e dar return
+	if(strcmp(mnemonico, "RET") == 0) {
+		strcpy(*opcode, "c3h");
+		return -1;
+	}
+	else if(strcmp(mnemonico, "HLT") == 0) {
+		strcpy(*opcode, "f4h");
+		return -1;
+	}
+	
+	
+	
 		token = strtok(NULL, ", \n"); /*Passa para o primeiro operador*/
-		if((strcmp(token, "[A]") != 0) || (strcmp(token, "[B]") != 0)) { /*Se o operador não é [A] ou [B]*/
+		if (token == NULL) return -1;
+		strcpy(op1, token);		
+		
+		if((strcmp(token, "[A]") != 0) && (strcmp(token, "[B]") != 0) && (strcmp(token, "A") != 0) && (strcmp(token, "B") != 0) ) { /*Se o operador não é [A] ou [B]*/
 			//verificar se é número ou rótulo
-			if(strchr(token, '[') != NULL) { /*Se o operador tem colchetes, retira-os*/
-			
-				for(i = 0; i < strlen(token); i++){
-					if (token[i] == '[' || token[i] == ']') {
-						for(j = i; j < strlen(token); j++){
-							token[j] = token[j+1];
-						}
-						i--;
-					}	
-				}
-				
-				printf("token sem colchete: %s", token);
+			if (isdigit(token[0]) != 0){ //é numero 
+				valor = token;
 			}
+			else {
+				if(strchr(token, '[') != NULL) { /*Se o operador tem colchetes, retira-os*/
+				
+					for(i = 0; i < strlen(token); i++){
+						if (token[i] == '[' || token[i] == ']') {
+							for(j = i; j < strlen(token); j++){
+								token[j] = token[j+1];
+							}
+							i--;
+						}	
+					}				
+				}
+				valor = procura_rotulo(rot, token, nr, linha);
+			}
+		}
+		
 			
+			
+			
+		//repete as ações para pegar o op2
+		token = strtok(NULL, ", \n");
+		if (token == NULL) return -1;
+		strcpy(op2, token);		
+		
+		if((strcmp(token, "[A]") != 0) && (strcmp(token, "[B]") != 0) && (strcmp(token, "A") != 0) && (strcmp(token, "B") != 0) ) { /*Se o operador não é [A] ou [B]*/
+			//verificar se é número ou rótulo
+			if (isdigit(token[0]) != 0){ //é numero 
+				valor = token;
+			}
+			else {
+				if(strchr(token, '[') != NULL) { /*Se o operador tem colchetes, retira-os*/
+				
+					for(i = 0; i < strlen(token); i++){
+						if (token[i] == '[' || token[i] == ']') {
+							for(j = i; j < strlen(token); j++){
+								token[j] = token[j+1];
+							}
+							i--;
+						}	
+					}				
+				}
+				valor = procura_rotulo(rot, token, nr, linha);
+			}
+		}
+	
+	
+	/*Compara mnemônicos com argumentos e retorna o opcode certo*/	
+	else if(strcmp(mnemonico, "JC") == 0) {
+		strcpy(*opcode, "72h");
+	}
+	else if(strcmp(mnemonico, "JNC") == 0) {
+		strcpy(*opcode, "73h");
+	}
+	else if(strcmp(mnemonico, "JZ") == 0) {
+		strcpy(*opcode, "74h");
+	}
+	else if(strcmp(mnemonico, "JNZ") == 0) {
+		strcpy(*opcode, "75h");
+	}
+	else if(strcmp(mnemonico, "JBE") == 0) {
+		strcpy(*opcode, "76h");
+	}
+	else if(strcmp(mnemonico, "JA") == 0) {
+		strcpy(*opcode, "77h");
+	}
+	else if(strcmp(mnemonico, "JMP") == 0) {
+		strcpy(*opcode, "ebh");
+	}
+	else if(strcmp(mnemonico, "CALL") == 0) {
+		strcpy(*opcode, "e8h");
+	}
+	else if(strcmp(mnemonico, "ADD") == 0) {
+		if(strchr(op2, '[') != NULL && strcmp(op2, "[B]") != 0) {
+			strcpy(*opcode, "02h");
+		}
+		else if(strcmp(op2, "[B]") == 0) {
+			strcpy(*opcode, "03h");
+		}
+		else if(strchr(op2, '[') == NULL) {
+			strcpy(*opcode, "04h");
 		}
 	}
+	else if(strcmp(mnemonico, "SUB") == 0) {
+		if(strchr(op2, '[') != NULL && strcmp(op2, "[B]") != 0) {
+			strcpy(*opcode, "2ah");
+		}
+		else if(strcmp(op2, "[B]") == 0) {
+			strcpy(*opcode, "2bh");
+		}
+		else if(strchr(op2, '[') == NULL) {
+			strcpy(*opcode, "2ch");
+		}
+	}
+	else if(strcmp(mnemonico, "CMP") == 0) {
+		if(strchr(op2, '[') != NULL && strcmp(op2, "[B]") != 0) {
+			strcpy(*opcode, "3ah");
+		}
+		else if(strcmp(op2, "[B]") == 0) {
+			strcpy(*opcode, "3bh");
+		}
+		else if(strchr(op2, '[') == NULL) {
+			strcpy(*opcode, "3ch");
+		}
+	}
+	else if(strcmp(mnemonico, "INC") == 0) {
+		if(strcmp(op1, "A") == 0 && strcmp(op2, NULL) == 0) {
+			strcpy(*opcode, "40h");
+		}
+		else if(strcmp(op1, "B") == 0 && strcmp(op2, NULL) == 0) {
+			strcpy(*opcode, "41h");
+		}
+	}
+	else if(strcmp(mnemonico, "DEC") == 0) {
+		if(strcmp(op1, "A") == 0 && strcmp(op2, NULL) == 0) {
+			strcpy(*opcode, "42h");
+		}
+		else if(strcmp(op1, "B") == 0 && strcmp(op2, NULL) == 0) {
+			strcpy(*opcode, "43h");
+		}
+	}
+	else if(strcmp(mnemonico, "MOV") == 0){
+		if(strcmp(op1, "A") == 0 && strcmp(op2, "B") == 0) {
+			strcpy(*opcode, "88h");
+		}
+		else if(strcmp(op1, "B") == 0 && strcmp(op2, "A") == 0) {
+			strcpy(*opcode, "8ah");
+		}
+		else if((strchr(op2, '[') != NULL) && (strcmp(op2, "[B]") != 0)) {
+			strcpy(*opcode, "a0h");
+		}
+		else if(strcmp(op2, "[B]") == 0) {
+			strcpy(*opcode, "a1h");
+		}
+		else if((strchr(op1, '[') != NULL) && (strcmp(op1, "[B]") != 0)) {
+			strcpy(*opcode, "a2h");
+		}
+		else if(strcmp(op1, "[B]") == 0) {
+			strcpy(*opcode, "a3h");
+		}
+		else if(strchr(op2, '[') != NULL) {
+			strcpy(*opcode, "b0h");
+		}
+	}
+	return valor;
 }
-
-
-
-
-
-
-
-
-
 
 
 
@@ -172,7 +311,7 @@ int main () {
 	setlocale(LC_ALL,"portuguese");
     //Variáveis
     rotulos rot[101];
-	int linha = 0, mem = 0 /*Conta os bytes usandos nos comandos*/, nr = 0 /*Contador de rótulos*/;
+	int linha = 0, mem = 0 /*Conta os bytes usandos nos comandos*/, nr = 0 /*Contador de rótulos*/, valor /*Valor do rótulo*/;
     char aux[101] /*Armazena a linha de código a ser lida*/, aux2[101] /*Auxiliar da auxiliar para strtok*/;
     char *opcode;
 	int i; 
@@ -207,15 +346,25 @@ int main () {
 		linha++;
 	}
 	/*Passo 2*/
-	
+	linha = 0;
 	rewind(entrada); /*Ler novamente o arquivo*/
 	while(fgets(aux, 101, entrada) != NULL){
 		remove_comentario(aux);
 		
 		if(strlen(aux) != 0 && aux[0] != '\n'){
 			strcpy(aux2, aux);
-			transforma_opcode(aux2, &opcode);
+			valor = transforma_opcode(aux2, &opcode, rot, nr, linha);
+			// printa opcode no arquivo e verifica se valor != -1, se for, printa tbm em outra linha
+			fflush(stdin);
+			printf("\nOPCODE: %s", opcode);
+			printf("\nARGUMENTO: %d", valor);
+			fseek(saida, 0, SEEK_END);
+			fprintf(saida, "\n%s", opcode);
+			fseek(saida, 0, SEEK_END);
+			fprintf(saida, "\n%d", valor);
 		}
+		linha++;
 	}
-	
+	fclose(entrada);
+	fclose(saida); 
 }
