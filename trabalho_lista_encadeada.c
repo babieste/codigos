@@ -44,15 +44,24 @@ void novo_funcionario(no *lista, info info) {
 };
 
 void mudar_departamento(no *lista, info info, int num) {
+	no q = (no) malloc(sizeof(struct reg));
 	no p = *lista;
 	
+	int novo_departamento;
 	
 	//Não muda o valor
 	while(p){
 		if(p->info.numero == num) {
+			q->info.numero = p->info.numero;
+			q->info.salario = p->info.salario;
 			printf("\nIndique o novo departamento: ");
-			scanf(" %d", &info.departamento);
-			p->info.departamento = num;
+			scanf(" %d", &novo_departamento);
+			q->info.departamento = novo_departamento;
+			
+			q->prox = *lista;
+			no q = *lista;
+			
+			free(p);
 		}
 		p = p->prox;
 	}
@@ -92,7 +101,7 @@ int main(){
 				break;
 		}
 		do {
-			printf("\nIr novamente? S/N");
+			printf("\n\nIr novamente? S/N");
 			reproc = toupper(getch());
 			system("cls");
 		} while (reproc != 'S' && reproc != 'N');
