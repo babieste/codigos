@@ -64,18 +64,43 @@ int mudar_departamento(no *lista, info info, int num) {
 int demitir_funcionario(no *lista, int num){
 	no p = *lista;
 	
-	while(p->prox != num){
+	if(p->numero == num) {
+		*lista = p->prox;
+		free(p);
+		return 1;
+	}
+	else{
+		no q;
+		while(p){
+			q = p;
+			p = p->prox;
+			if(p->numero == num){
+				q->prox = p->prox;
+				free(p);
+				return 1;
+			}
+			printf("\nNão existe funcionário com esse número.");
+			return 0;
+		}
+	}
+		
+		
+}
+
+void relacao_departamento(no lista, int departamento){
+	no p = lista;
+	
+	while(p){
+		if(p->departamento == departamento)
+			printf("\nNúmero: %d\tNível Salarial: %d\tDepartamento: %d", p->numero, p->salario, p->departamento);
 		p = p->prox;
 	}
-	no q = p;
-	q->prox = *lista;
-	*lista = aaa;
 }
 
 int main(){
 	setlocale(LC_ALL, "Portuguese");
 	char reproc; /*resposta do reprocessamento*/
-	int op, num /*número do funcionário a ser mudado ou demitido*/;
+	int op, num /*número do funcionário a ser mudado ou demitido*/, departamento /*departamento escolhido*/;
 	info info;
 	no lista = NULL;
 		
@@ -93,6 +118,7 @@ int main(){
 				printf("\nNúmero do funcionário a ser demitido: ");
 				scanf(" %d", &num);
 				demitir_funcionario(&lista, num);
+				mostra_lista(lista);
 				break;
 			case 3:
 				printf("\nNúmero do funcionário a ser mudado: ");
@@ -101,7 +127,11 @@ int main(){
 				mostra_lista(lista);
 				break;
 			case 4:
-				//do...
+				do {
+					printf("\nDigite o departamento: ");
+					scanf(" %d", &departamento);
+				} while (departamento < 1 && departamento > 3);
+				relacao_departamento(lista, departamento);
 				break;
 			default:
 				printf("\nOpção inválida.");
