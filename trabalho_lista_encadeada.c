@@ -10,7 +10,9 @@ typedef struct {
 
 typedef struct reg *no;
 struct reg {
-	info info;
+	int numero;
+	int salario;
+	int departamento;
 	struct reg *prox;
 };
 
@@ -19,7 +21,7 @@ void mostra_lista(no lista){
 	no p = lista;
 	
 	while (p){
-		printf("\nNúmero: %d\tNível Salarial: %d\tDepartamento: %d", p->info.numero, p->info.salario, p->info.departamento);
+		printf("\nNúmero: %d\tNível Salarial: %d\tDepartamento: %d", p->numero, p->salario, p->departamento);
 		p = p->prox;
 	}
 	
@@ -28,9 +30,9 @@ void mostra_lista(no lista){
 void novo_funcionario(no *lista, info info) {
 	no p = (no) malloc(sizeof(struct reg));
 	
-	p->info.numero = info.numero;
-	p->info.salario = info.salario;
-	p->info.departamento = info.departamento;
+	p->numero = info.numero;
+	p->salario = info.salario;
+	p->departamento = info.departamento;
 	p->prox = NULL;
 	
 	if (*lista == NULL)
@@ -43,34 +45,37 @@ void novo_funcionario(no *lista, info info) {
 	}
 };
 
-void mudar_departamento(no *lista, info info, int num) {
-	no q = (no) malloc(sizeof(struct reg));
-	no p = *lista;
-	
+int mudar_departamento(no *lista, info info, int num) {
 	int novo_departamento;
+	printf("\nIndique o novo departamento: ");
+	scanf(" %d", &novo_departamento);
 	
-	//Não muda o valor
+	no p = *lista;
+		
 	while(p){
-		if(p->info.numero == num) {
-			q->info.numero = p->info.numero;
-			q->info.salario = p->info.salario;
-			printf("\nIndique o novo departamento: ");
-			scanf(" %d", &novo_departamento);
-			q->info.departamento = novo_departamento;
-			
-			q->prox = *lista;
-			no q = *lista;
-			
-			free(p);
+		if(p->numero == num) {
+			p->departamento = novo_departamento;
 		}
 		p = p->prox;
 	}
 }
 
+//Não funfa
+int demitir_funcionario(no *lista, int num){
+	no p = *lista;
+	
+	while(p->prox != num){
+		p = p->prox;
+	}
+	no q = p;
+	q->prox = *lista;
+	*lista = aaa;
+}
+
 int main(){
 	setlocale(LC_ALL, "Portuguese");
 	char reproc; /*resposta do reprocessamento*/
-	int op, num /*número do funcionário a ser mudado*/;
+	int op, num /*número do funcionário a ser mudado ou demitido*/;
 	info info;
 	no lista = NULL;
 		
@@ -85,7 +90,9 @@ int main(){
 				mostra_lista(lista);
 				break;
 			case 2:
-				//do...
+				printf("\nNúmero do funcionário a ser demitido: ");
+				scanf(" %d", &num);
+				demitir_funcionario(&lista, num);
 				break;
 			case 3:
 				printf("\nNúmero do funcionário a ser mudado: ");
