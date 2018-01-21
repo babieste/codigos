@@ -1,5 +1,5 @@
 let frase = "Três pratos de trigo para três tigres tristes";
-let letra_procurada = 'r'
+let letra_procurada = 'r';
 let contador = 0;
 
 
