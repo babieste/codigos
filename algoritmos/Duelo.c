@@ -4,7 +4,7 @@
 #include <windows.h>
 #include <time.h>
 
-//protótipos
+//protÃ³tipos
 int perso(int modo, int i);
 int chance(int h, int d);
 int jogo(int modo, int jogador[2], int vida[2]);
