@@ -46,12 +46,12 @@ int main () {
 			while (ang > 360) {
 				ang = ang - 360;
 			}
-			//Transformação do ângulo de graus para radianos:
+			//TransformaÃ§Ã£o do Ã¢ngulo de graus para radianos:
 			ang = ang*RAD;
 			printf("\nO angulo %f equivale a %f em radianos.\n\n", aux, ang);
 			
 		}
-			//Fórmulas:
+			//FÃ³rmulas:
 			sec = 1/cos(ang);
 			cosec = 1/sin(ang);
 			cotg = 1/tan(ang);
