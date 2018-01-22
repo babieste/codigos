@@ -1,4 +1,4 @@
-//Bárbara Este Fernandez
+//BÃ¡rbara Este Fernandez
 //RA: 161025901
 
 //Trabalho completo
@@ -9,11 +9,11 @@
 #include <ctype.h>
 #include <string.h>
 
-//Inicialização e verificação dos arquivos:
+//InicializaÃ§Ã£o e verificaÃ§Ã£o dos arquivos:
 FILE *entrada;
 FILE *saida;
 
-typedef struct { //Rótulos
+typedef struct { //RÃ³tulos
     char nome[101];
     int valor;
 } rotulos;
@@ -23,11 +23,11 @@ typedef struct { //EQUs
     int valor;
 } equ;
 
-int LimpaArgumento(char *token){ //Função que retira os colchetes, indicadores e vírgula se tiver no argumento. Retorna se o argumento é de um byte ou dois.
+int LimpaArgumento(char *token){ //FunÃ§Ã£o que retira os colchetes, indicadores e vÃ­rgula se tiver no argumento. Retorna se o argumento Ã© de um byte ou dois.
     int DoisBytes = 0;
     int i;
 
-    if(strstr(token,",")!=NULL){ //Verifica a existência de vírgula, e a remove
+    if(strstr(token,",")!=NULL){ //Verifica a existÃªncia de vÃ­rgula, e a remove
         DoisBytes = 1;
         for(i = strstr(token, ","); i <= sizeof(token); i++){
             token[i] = token[i+1];
@@ -57,7 +57,7 @@ int LeEQU(char *token, equ equ[], int m){
 }
 
 
-char TransformaEmOpcode(char *token, char argumento[]){ //Transforma o mnemônico em opcode
+char TransformaEmOpcode(char *token, char argumento[]){ //Transforma o mnemÃ´nico em opcode
     if(strcmp(token, "MOV")==0){
         if(argumento[0]=='A' && (strstr(argumento, "[")!=NULL))
             return "a0h";
@@ -102,7 +102,7 @@ char TransformaEmOpcode(char *token, char argumento[]){ //Transforma o mnemônico
         printf("\nO comando %s eh invalido", token);
 }
 
-//-----------------------------------------FUNÇÃO PRINCIPAL-----------------------------------------------------------
+//-----------------------------------------FUNÃ‡ÃƒO PRINCIPAL-----------------------------------------------------------
 int main () {
     if((entrada = fopen("entrada.txt", "rt")) == NULL){
         printf("\nErro na inicializacao do arquivo de mnemonicos.");
@@ -115,23 +115,23 @@ int main () {
         exit(1);
     }
 
-    //Variáveis
+    //VariÃ¡veis
     rotulos rotulo[101];
     equ equ[101];
-    char *aux; /*Armazena a linha de código a ser lida*/
+    char *aux; /*Armazena a linha de cÃ³digo a ser lida*/
     char *token;
     char opcode[3];
     int DoisBytes;
 
-    //Variáveis temporárias para salvar no EQU
+    //VariÃ¡veis temporÃ¡rias para salvar no EQU
     char *carac;
     char *argumento;
     int num;
 
-    //Mnemônicos
+    //MnemÃ´nicos
     char mnemonico[]= "#MOV#ADD#SUB#CMP#JMP#JC#JNC#JZ#JNZ#JBE#JA#CALL";
 
-    int n = 0 /*Índice do rótulo*/, m = 0 /*Contador de EQUs*/, linha = 1;
+    int n = 0 /*Ãndice do rÃ³tulo*/, m = 0 /*Contador de EQUs*/, linha = 1;
 
     printf("ESSA PORRA TA FUNCINANDO");
 
@@ -143,30 +143,30 @@ int main () {
         printf("\nToken: %s", token);
 
         while (token != NULL) {
-            if(aux[0]!=' '){ //Se o primeiro índice da linha não é um espaço em branco, é porque é um rótulo ou um EQU (PARTE 1)
-                if (isalpha(token[0])== 0) //Se é zero é porque é número
+            if(aux[0]!=' '){ //Se o primeiro Ã­ndice da linha nÃ£o Ã© um espaÃ§o em branco, Ã© porque Ã© um rÃ³tulo ou um EQU (PARTE 1)
+                if (isalpha(token[0])== 0) //Se Ã© zero Ã© porque Ã© nÃºmero
                     num = *token;
-                else if (isalpha(token[0])!=0 && stricmp(token,"EQU")!=0) //Se é uma palavra mas não é EQU
+                else if (isalpha(token[0])!=0 && stricmp(token,"EQU")!=0) //Se Ã© uma palavra mas nÃ£o Ã© EQU
                     strcpy(carac, token);
 
-                if (strcmp(token, "EQU")==0){ //Se é EQU, então guarda na struct os valores nas variáveis temporárias
+                if (strcmp(token, "EQU")==0){ //Se Ã© EQU, entÃ£o guarda na struct os valores nas variÃ¡veis temporÃ¡rias
                     strcpy(equ[m].nome,carac);
                     equ[m].valor = num;
                     m++;
                 }
-                else if (!(isalpha(*token))){ //Se é rótulo, salva
+                else if (!(isalpha(*token))){ //Se Ã© rÃ³tulo, salva
                     strcpy(rotulo[n].nome, carac);
                     rotulo[n].valor = num;
                     n++;
                 }
             }
-            else { //Se não é RÓTULO nem EQU, então é um comando ou argumento de comando(PARTE 2)
-                if(strstr(token, mnemonico)==NULL){ //Se não é um comando, é um argumento
+            else { //Se nÃ£o Ã© RÃ“TULO nem EQU, entÃ£o Ã© um comando ou argumento de comando(PARTE 2)
+                if(strstr(token, mnemonico)==NULL){ //Se nÃ£o Ã© um comando, Ã© um argumento
                     strcpy(argumento, token);
                     DoisBytes = LimpaArgumento(token);
                     if (DoisBytes == 1)
-                        linha = linha+2; //Pula duas linhas porque são dois argumentos por linha
-                    if (isalpha(*token)!=0){ //Se é caracter, então um EQU foi utilizado
+                        linha = linha+2; //Pula duas linhas porque sÃ£o dois argumentos por linha
+                    if (isalpha(*token)!=0){ //Se Ã© caracter, entÃ£o um EQU foi utilizado
                         *token = LeEQU(token, equ, m);
                         fputs(token, saida);
                         putc('\n',saida);
