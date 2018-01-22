@@ -1,8 +1,8 @@
-//6) Demonstre como implementar um fila estática de inteiros em C, usando um vetor fila[100], onde
-//fila[0] é usado para indicar o início da fila, fila[1] para indicar o final da fila e as outras posições
+//6) Demonstre como implementar um fila estÃ¡tica de inteiros em C, usando um vetor fila[100], onde
+//fila[0] Ã© usado para indicar o inÃ­cio da fila, fila[1] para indicar o final da fila e as outras posiÃ§Ãµes
 //(fila[2] a fila[99]) guardam os elementos da fila. Demonstre como inicializar esse vetor de modo a
 //representar a fila vazia. Escreva as rotinas desenfileira (.),enfileira(.), vazia(.) e cheia(.) para tal
-//implementação.
+//implementaÃ§Ã£o.
 
 #include <stdio.h>
 #include <stdlib.h>
@@ -19,7 +19,7 @@
 typedef int def_fila[MAX];
 
 //-----------------------------------------
-//Funções
+//FunÃ§Ãµes
 //-----------------------------------------
 
 int cheia(def_fila fila){
@@ -50,10 +50,10 @@ int desenfileira(def_fila fila, int *numero){
 	if(vazia(fila))
 		return 0;
 	*numero = fila[inicio];
-	if(inicio == final) //Se só tinha um elemento na fila, zera a fila
+	if(inicio == final) //Se sÃ³ tinha um elemento na fila, zera a fila
 		inicio = final = -1;
 	else
-		inicio++; //Se não pega o valor do próximo
+		inicio++; //Se nÃ£o pega o valor do prÃ³ximo
 }
 
 void mostra_fila(def_fila fila){
@@ -72,7 +72,7 @@ void inicializa(def_fila fila){
 
 int menu(){
 	int op;
-	printf("\n-----------------------------------------\n1- Adicionar número na fila\n2- Remover número da fila\nOpção: ");
+	printf("\n-----------------------------------------\n1- Adicionar nÃºmero na fila\n2- Remover nÃºmero da fila\nOpÃ§Ã£o: ");
 	scanf(" %d", &op);
 	return op;
 }
@@ -90,25 +90,25 @@ int main(){
 		switch(opcao_menu){
 			case 1:
 				do {
-					printf("\nDigite um número: ");
+					printf("\nDigite um nÃºmero: ");
 					scanf(" %d", &numero);
 					if(!enfileira(fila, numero)) {
-						printf("\nNão foi possível adicionar um valor à fila.\n");
+						printf("\nNÃ£o foi possÃ­vel adicionar um valor Ã  fila.\n");
 						op = -1;
 					}	
 					else {
 						printf("\nFila: ");
 						mostra_fila(fila);
-						printf("\nAdicionar outro número (-1 para cancelar)? ");
+						printf("\nAdicionar outro nÃºmero (-1 para cancelar)? ");
 						scanf(" %d", &op);
 					}	
 				} while (op != -1);
 				break;
 			case 2:
 				if(!desenfileira(fila, &numero))
-					printf("\nA fila já está vazia.\n");
+					printf("\nA fila jÃ¡ estÃ¡ vazia.\n");
 				else {
-					printf("\nNúmero retirado: %d\nFila restante: ", numero);
+					printf("\nNÃºmero retirado: %d\nFila restante: ", numero);
 					mostra_fila(fila);
 				}
 		}
