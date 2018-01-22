@@ -50,7 +50,7 @@ int matrizTransposta(int n, int matriz[n][n], int transposta[n][n]) {
 	}
 }
 
-//FunÁıes com duas matrizes
+//Fun√ß√µes com duas matrizes
 int duasMatrizes(int n, int A[n][n], int B[n][n]) {
 	int i, j;
 	
@@ -101,7 +101,7 @@ int multiplicarMatriz(int n, int A[n][n], int B[n][n], int matriz[n][n]) {
 	}
 }
 
-//v = 1 È verdadeiro, v = 0 È falso
+//v = 1 √© verdadeiro, v = 0 √© falso
 int quadradoMagico(int n, int matriz[n][n]) {
 	int i, j;
 	int linha[n], coluna[n], dp, ds;
@@ -118,7 +118,7 @@ int quadradoMagico(int n, int matriz[n][n]) {
 			//Diagonal principal
 			if (i == j) 
 				dp += matriz[i][j];
-			//Diagonal secund·ria
+			//Diagonal secund√°ria
 			if (i == n - 1 - j)
 				ds += matriz[i][j];
 		}
@@ -132,7 +132,7 @@ int quadradoMagico(int n, int matriz[n][n]) {
 		}
 	}
 	
-	//Verifica se a somas linhas, colunas, diagonais s„o iguais
+	//Verifica se a somas linhas, colunas, diagonais s√£o iguais
 	int v = 1;
 	for (i = 0; i < n; i++) {
 		if (linha[i] != coluna[i]) {
@@ -348,8 +348,8 @@ int menu_funcoes(int escolha) {
 }
 
 
-//ONDE EU PAREI: AS funÁıes 01 e 02 retornam na menu_inicial, mas t· precisando apertar ENTER v·rias vezes pra conseguir retorn·-las, ARRUMAR.
-//O retorno das funÁıes de duas matrizes n„o est„o funcionando direito!
+//ONDE EU PAREI: AS fun√ß√µes 01 e 02 retornam na menu_inicial, mas t√° precisando apertar ENTER v√°rias vezes pra conseguir retorn√°-las, ARRUMAR.
+//O retorno das fun√ß√µes de duas matrizes n√£o est√£o funcionando direito!
 
 int main () {
 	int tecla, n = 0, matriz[MAX][MAX], transposta[MAX][MAX], A[MAX][MAX], B[MAX][MAX];
@@ -357,7 +357,7 @@ int main () {
 		do {
 			menu_inicial();
 			printf("\n\nvalor resultante = %d", menu_inicial());
-			//Retornos das funÁıes de uma matriz:
+			//Retornos das fun√ß√µes de uma matriz:
 			if (menu_funcoes(1) == 0) {
 				do {
 					printf("\n\n\nEscolha a ordem da matriz: ");
@@ -427,7 +427,7 @@ int main () {
 					printf("\n\n\nA matriz nao eh uma permutacao!");
 			}
 			
-			//Retorno das funÁıes de duas matrizes:
+			//Retorno das fun√ß√µes de duas matrizes:
 			else if (menu_funcoes(2) == 0) {
 				printf("\nVoce escolheu somar matrizes!\n");
 				duasMatrizes(n, A, B);
