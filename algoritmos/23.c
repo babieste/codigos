@@ -12,27 +12,27 @@ struct no {
 typedef struct no* def_fila;
 
 //=========================================================================
-//						FUN«’ES
+//						FUN√á√ïES
 //=========================================================================
 void enfileira(def_fila *inicio, def_fila* final, int numero){
 	def_fila q = (def_fila) malloc(sizeof(struct no));
 	q->dado = numero;
 	q->prox = NULL;
 	
-	if(*final != NULL) (*final)->prox = q; //*final != NULL significa que h· elementos na fila, 
-	else *inicio = q; //<-aponta o primeiro	// ent„o È preciso incluir o novo nÛ depois do ˙ltimo elemento
-	*final = q;								// e passar o ponteiro de final para o ˙ltimo elemento.
+	if(*final != NULL) (*final)->prox = q; //*final != NULL significa que h√° elementos na fila, 
+	else *inicio = q; //<-aponta o primeiro	// ent√£o √© preciso incluir o novo n√≥ depois do √∫ltimo elemento
+	*final = q;								// e passar o ponteiro de final para o √∫ltimo elemento.
 }
 
 int desenfileira(def_fila* inicio, def_fila* final, int* numero){
 	def_fila q;
 	
-	if(*inicio == NULL) return 0; //Se n„o h· elementos na lista, Ò tem o que tirar
+	if(*inicio == NULL) return 0; //Se n√£o h√° elementos na lista, √± tem o que tirar
 	q = *inicio; //Recupera o primeiro elemento
 	
-	*inicio = (*inicio)->prox; //Aponta para o prÛximo (segundo elemento)
-	if (*inicio == NULL) *final = NULL; //Se inÌcio == NULL, o elemento 'retirado' era o ˙ltimo, 
-										// ent„o o ponteiro *final tambÈm deve apontar para NULL;
+	*inicio = (*inicio)->prox; //Aponta para o pr√≥ximo (segundo elemento)
+	if (*inicio == NULL) *final = NULL; //Se in√≠cio == NULL, o elemento 'retirado' era o √∫ltimo, 
+										// ent√£o o ponteiro *final tamb√©m deve apontar para NULL;
 	*numero = q->dado;
 	free(q);
 	return 1;
