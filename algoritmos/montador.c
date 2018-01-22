@@ -1,4 +1,4 @@
-//Bárbara Este Fernandez
+//BÃ¡rbara Este Fernandez
 //RA: 161025901
 
 //Trabalho completo
@@ -11,11 +11,11 @@
 
 #include <locale.h>
 
-//Inicialização dos arquivos:
+//InicializaÃ§Ã£o dos arquivos:
 FILE *entrada;
 FILE *saida;
 
-typedef struct { //EQUs e rótulos
+typedef struct { //EQUs e rÃ³tulos
     char nome[101];
     int valor;
 } rotulos;
@@ -24,14 +24,14 @@ void calcula_mem(char aux[], int *mem){
 	char *token;
 	
 	
-	if(aux[0] == ' ') { /*Não é rótulo, é mnemônico*/
+	if(aux[0] == ' ') { /*NÃ£o Ã© rÃ³tulo, Ã© mnemÃ´nico*/
 		token = strtok(aux, " \n");
-		/*Se tiver mnemônico, aumenta o valor de MEM*/
+		/*Se tiver mnemÃ´nico, aumenta o valor de MEM*/
 	} 
-	else { /*Possui um rótulo na frente*/
-		token = strtok(aux, " \n"); /*Ignora o rótulo*/
-		token = strtok(NULL, " \n"); /*Lê o mnemônico na segunda palavra*/
-		if(token == NULL) return; /*Só tem rótulo na linha*/
+	else { /*Possui um rÃ³tulo na frente*/
+		token = strtok(aux, " \n"); /*Ignora o rÃ³tulo*/
+		token = strtok(NULL, " \n"); /*LÃª o mnemÃ´nico na segunda palavra*/
+		if(token == NULL) return; /*SÃ³ tem rÃ³tulo na linha*/
 	}	
 	
 	
@@ -74,23 +74,23 @@ void remove_comentario(char aux[]){
 void le_rotulo(rotulos rot[], char aux[], int *nr, int mem){
 	char *token;
 	
-	token = strtok(aux, " \n"); /*Lê o nome do rótulo*/
+	token = strtok(aux, " \n"); /*LÃª o nome do rÃ³tulo*/
 	if (token[strlen(token)-1] == '\n') /*Retira o ENTER*/
 		token[strlen(token)-1] = '\0';
-	strcpy(rot[*nr].nome, token); /*Coloca na struct o nome do rótulo*/
+	strcpy(rot[*nr].nome, token); /*Coloca na struct o nome do rÃ³tulo*/
 	//printf("x%sx ", rot[*nr].nome);
 	 
-	token = strtok(NULL, " \n"); /*Lê a segunda palavra*/
+	token = strtok(NULL, " \n"); /*LÃª a segunda palavra*/
 	if(token != NULL){
-		if(strcmp(token, "EQU") == 0) { /*Verifica se é 'EQU'*/
-			token = strtok(NULL, " \n"); /*Lê a terceira palavra*/
+		if(strcmp(token, "EQU") == 0) { /*Verifica se Ã© 'EQU'*/
+			token = strtok(NULL, " \n"); /*LÃª a terceira palavra*/
 			rot[*nr].valor = atoi(token);
 		}
-		else { /*Se não é 'EQU' então é rótulo com mnemônico na frente*/
+		else { /*Se nÃ£o Ã© 'EQU' entÃ£o Ã© rÃ³tulo com mnemÃ´nico na frente*/
 			rot[*nr].valor = mem;
 		}
 	}
-	else { /*Se token é nulo então é rótulo sem mnemônico na frente*/
+	else { /*Se token Ã© nulo entÃ£o Ã© rÃ³tulo sem mnemÃ´nico na frente*/
 		rot[*nr].valor = mem;
 	}
 	
@@ -100,7 +100,7 @@ void le_rotulo(rotulos rot[], char aux[], int *nr, int mem){
 }
 
 
-//Funções do Passo 2
+//FunÃ§Ãµes do Passo 2
 
 
 
@@ -111,7 +111,7 @@ int procura_rotulo(rotulos rot[], char nome[], int nr, int linha){
 			return rot[i].valor;
 		}
 	}
-	printf("\nERRO: [Linha %d] Rótulo %s não encontrado!", linha, nome);
+	printf("\nERRO: [Linha %d] RÃ³tulo %s nÃ£o encontrado!", linha, nome);
 	return -1;
 }
 
@@ -122,16 +122,16 @@ int transforma_opcode(char aux[], char opcode[], rotulos rot[], int nr, int linh
 	fflush(stdin);
 	token = strtok(aux, " \n"); 
 	
-	if(aux[0] != ' ') { /*Se possui um rótulo no início, ignora-o*/
+	if(aux[0] != ' ') { /*Se possui um rÃ³tulo no inÃ­cio, ignora-o*/
 		token = strtok(NULL, " \n");
 	}
 
 	
-	if (token == NULL) return -1; /*Se não há mnemônico na linha, sai da função*/
+	if (token == NULL) return -1; /*Se nÃ£o hÃ¡ mnemÃ´nico na linha, sai da funÃ§Ã£o*/
 	strcpy(mnemonico, token);
-	if (strcmp(mnemonico,"EQU")==0) return -1; /*Se for EQU, sai da função*/
+	if (strcmp(mnemonico,"EQU")==0) return -1; /*Se for EQU, sai da funÃ§Ã£o*/
 	
-	//printf("\nMNEMÔNICO: %s", mnemonico);
+	//printf("\nMNEMÃ”NICO: %s", mnemonico);
 	
 	// se for RET OU HLT, passar o codigo p/ o opcode e dar return
 	if(strcmp(mnemonico, "RET") == 0) {
@@ -149,9 +149,9 @@ int transforma_opcode(char aux[], char opcode[], rotulos rot[], int nr, int linh
 		if (token == NULL) return -1;
 		strcpy(op1, token);		
 		
-		if((strcmp(token, "[A]") != 0) && (strcmp(token, "[B]") != 0) && (strcmp(token, "A") != 0) && (strcmp(token, "B") != 0) ) { /*Se o operador não é [A] ou [B]*/
-			//verificar se é número ou rótulo
-			if (isdigit(token[0]) != 0){ //é número
+		if((strcmp(token, "[A]") != 0) && (strcmp(token, "[B]") != 0) && (strcmp(token, "A") != 0) && (strcmp(token, "B") != 0) ) { /*Se o operador nÃ£o Ã© [A] ou [B]*/
+			//verificar se Ã© nÃºmero ou rÃ³tulo
+			if (isdigit(token[0]) != 0){ //Ã© nÃºmero
 				valor = atoi(token);
 			}
 			else {
@@ -205,14 +205,14 @@ int transforma_opcode(char aux[], char opcode[], rotulos rot[], int nr, int linh
 	}
 			
 			
-		//repete as ações para pegar o op2
+		//repete as aÃ§Ãµes para pegar o op2
 		token = strtok(NULL, ", \n");
 		if (token == NULL) return 256;
 		strcpy(op2, token);		
 		
-		if((strcmp(token, "[A]") != 0) && (strcmp(token, "[B]") != 0) && (strcmp(token, "A") != 0) && (strcmp(token, "B") != 0) ) { /*Se o operador não é [A] ou [B]*/
-			//verificar se é número ou rótulo
-			if (isdigit(token[0]) != 0){ //é numero 
+		if((strcmp(token, "[A]") != 0) && (strcmp(token, "[B]") != 0) && (strcmp(token, "A") != 0) && (strcmp(token, "B") != 0) ) { /*Se o operador nÃ£o Ã© [A] ou [B]*/
+			//verificar se Ã© nÃºmero ou rÃ³tulo
+			if (isdigit(token[0]) != 0){ //Ã© numero 
 				valor = atoi(token);
 			}
 			else {
@@ -233,7 +233,7 @@ int transforma_opcode(char aux[], char opcode[], rotulos rot[], int nr, int linh
 		}
 	
 	
-	/*Compara mnemônicos com argumentos e retorna o opcode certo*/	
+	/*Compara mnemÃ´nicos com argumentos e retorna o opcode certo*/	
 	
 	if(strcmp(mnemonico, "ADD") == 0) {
 		if(strchr(op2, '[') != NULL && strcmp(op2, "[B]") != 0) {
@@ -308,7 +308,7 @@ int transforma_opcode(char aux[], char opcode[], rotulos rot[], int nr, int linh
 		}
 	}
 	else {
-		printf("\nO comando %s é inválido.", mnemonico);
+		printf("\nO comando %s Ã© invÃ¡lido.", mnemonico);
 		getch();
 		exit(1);
 	}
@@ -320,16 +320,16 @@ int transforma_opcode(char aux[], char opcode[], rotulos rot[], int nr, int linh
 
 
 
-//-----------------------------------------FUNÇÃO PRINCIPAL-----------------------------------------------------------
+//-----------------------------------------FUNÃ‡ÃƒO PRINCIPAL-----------------------------------------------------------
 int main () {
 	
 	setlocale(LC_ALL,"portuguese");
 	
-    //Variáveis
+    //VariÃ¡veis
     rotulos rot[101];
-	int linha = 0, mem = 0 /*Conta os bytes usandos nos comandos*/, nr = 0 /*Contador de rótulos*/, valor /*Valor do rótulo*/;
-    char aux[101] /*Armazena a linha de código a ser lida*/, aux2[101] /*Auxiliar da auxiliar para strtok*/;
-    char opcode[5]; /*Para a função transforma_opcode*/
+	int linha = 0, mem = 0 /*Conta os bytes usandos nos comandos*/, nr = 0 /*Contador de rÃ³tulos*/, valor /*Valor do rÃ³tulo*/;
+    char aux[101] /*Armazena a linha de cÃ³digo a ser lida*/, aux2[101] /*Auxiliar da auxiliar para strtok*/;
+    char opcode[5]; /*Para a funÃ§Ã£o transforma_opcode*/
 	int i; 
 	char arquivo_entrada[31];
 	
@@ -337,9 +337,9 @@ int main () {
 	fflush(stdin);
 	gets(arquivo_entrada);
 	
-    //Verificação dos arquivos
+    //VerificaÃ§Ã£o dos arquivos
     if((entrada = fopen(arquivo_entrada, "rt")) == NULL){
-        printf("\nO arquivo %s não existe.", arquivo_entrada); 
+        printf("\nO arquivo %s nÃ£o existe.", arquivo_entrada); 
 		getch(); 
 		exit(1);
     }
@@ -352,7 +352,7 @@ int main () {
     rewind(entrada);
 	
 	/*Passo 1*/
-    while(fgets(aux, 101, entrada)!= NULL){ //Enquanto não é o final do arquivo
+    while(fgets(aux, 101, entrada)!= NULL){ //Enquanto nÃ£o Ã© o final do arquivo
         //printf("\nFrase auxiliar: [%d] x%sx", linha, aux);
       	remove_comentario(aux);
       	
