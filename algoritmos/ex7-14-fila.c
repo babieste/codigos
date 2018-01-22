@@ -1,6 +1,6 @@
 //14) Escreva um programa para que lida uma cadeia de caracteres e armazenada numa estrutura de
-//dados do tipo fila, sejam construídas outras três filas onde uma contém as vogais da cadeia de
-//caracteres digitada, a outra as consoantes e na última, os caracteres que não encaixam na definição
+//dados do tipo fila, sejam construÃ­das outras trÃªs filas onde uma contÃ©m as vogais da cadeia de
+//caracteres digitada, a outra as consoantes e na Ãºltima, os caracteres que nÃ£o encaixam na definiÃ§Ã£o
 //de vogal e consoante.
 
 #include <stdio.h>
@@ -14,7 +14,7 @@
 typedef char def_fila[MAX];
 
 //-----------------------------------------
-//Funções
+//FunÃ§Ãµes
 //-----------------------------------------
 
 int cheia(int final){
@@ -73,12 +73,12 @@ int main(){
 			printf("\nDigite um caractere (z para cancelar): ");
 			scanf(" %c", &letra);
 			if(!enfileira(fila, &inicio_fila, &final_fila, letra))
-				printf("\nNão foi possível adicionar esse caractere.");
+				printf("\nNÃ£o foi possÃ­vel adicionar esse caractere.");
 		} while (letra != 'z');
 		
 		do{
 			if(!desenfileira(fila, &inicio_fila, &final_fila, &letra)) {
-				printf("\nNão foi possível continuar a operação.");
+				printf("\nNÃ£o foi possÃ­vel continuar a operaÃ§Ã£o.");
 				break;
 			}
 			if (letra == 'a' || letra == 'e' || letra == 'i' || letra == 'o' || letra == 'u')
