@@ -21,7 +21,7 @@ void mostra_lista(no lista){
 	no p = lista;
 	
 	while (p){
-		printf("\nN˙mero: %d\tNÌvel Salarial: %d\tDepartamento: %d", p->numero, p->salario, p->departamento);
+		printf("\nN√∫mero: %d\tN√≠vel Salarial: %d\tDepartamento: %d", p->numero, p->salario, p->departamento);
 		p = p->prox;
 	}
 	
@@ -60,7 +60,7 @@ int mudar_departamento(no *lista, info info, int num) {
 	}
 }
 
-//N„o funfa
+//N√£o funfa
 int demitir_funcionario(no *lista, int num){
 	no p = *lista;
 	
@@ -79,7 +79,7 @@ int demitir_funcionario(no *lista, int num){
 				free(p);
 				return 1;
 			}
-			printf("\nN„o existe funcion·rio com esse n˙mero.");
+			printf("\nN√£o existe funcion√°rio com esse n√∫mero.");
 			return 0;
 		}
 	}
@@ -92,7 +92,7 @@ void relacao_departamento(no lista, int departamento){
 	
 	while(p){
 		if(p->departamento == departamento)
-			printf("\nN˙mero: %d\tNÌvel Salarial: %d\tDepartamento: %d", p->numero, p->salario, p->departamento);
+			printf("\nN√∫mero: %d\tN√≠vel Salarial: %d\tDepartamento: %d", p->numero, p->salario, p->departamento);
 		p = p->prox;
 	}
 }
@@ -100,28 +100,28 @@ void relacao_departamento(no lista, int departamento){
 int main(){
 	setlocale(LC_ALL, "Portuguese");
 	char reproc; /*resposta do reprocessamento*/
-	int op, num /*n˙mero do funcion·rio a ser mudado ou demitido*/, departamento /*departamento escolhido*/;
+	int op, num /*n√∫mero do funcion√°rio a ser mudado ou demitido*/, departamento /*departamento escolhido*/;
 	info info;
 	no lista = NULL;
 		
 	do {
-		printf("MENU INCIAL\n\n1- Admiss„o de funcion·rio novo\n2- Demiss„o de funcion·rio\n3- MudanÁa de departamento por parte do funcion·rio\n4- RelaÁ„o dos funcion·rios de um departamento\n\nOpÁ„o: ");
+		printf("MENU INCIAL\n\n1- Admiss√£o de funcion√°rio novo\n2- Demiss√£o de funcion√°rio\n3- Mudan√ßa de departamento por parte do funcion√°rio\n4- Rela√ß√£o dos funcion√°rios de um departamento\n\nOp√ß√£o: ");
 		scanf(" %d", &op);
 		switch (op){
 			case 1:
-				printf("\nN˙mero, nÌvel salarial, departamento: ");
+				printf("\nN√∫mero, n√≠vel salarial, departamento: ");
 				scanf(" %d %d %d", &info.numero, &info.salario, &info.departamento);
 				novo_funcionario(&lista, info);
 				mostra_lista(lista);
 				break;
 			case 2:
-				printf("\nN˙mero do funcion·rio a ser demitido: ");
+				printf("\nN√∫mero do funcion√°rio a ser demitido: ");
 				scanf(" %d", &num);
 				demitir_funcionario(&lista, num);
 				mostra_lista(lista);
 				break;
 			case 3:
-				printf("\nN˙mero do funcion·rio a ser mudado: ");
+				printf("\nN√∫mero do funcion√°rio a ser mudado: ");
 				scanf(" %d", &num);
 				mudar_departamento(&lista, info, num);
 				mostra_lista(lista);
@@ -134,7 +134,7 @@ int main(){
 				relacao_departamento(lista, departamento);
 				break;
 			default:
-				printf("\nOpÁ„o inv·lida.");
+				printf("\nOp√ß√£o inv√°lida.");
 				break;
 		}
 		do {
