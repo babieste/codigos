@@ -57,7 +57,7 @@ int main () {
                 resposta[i] = '_';
             }
 
-		//InÌcio do jogo
+		//In√≠cio do jogo
 		while(1)
         {
             ver = 0, pontos = 0;
@@ -82,7 +82,7 @@ int main () {
             printf("\n\nA palavra contem a letra:");
             letra = toupper(getch());
             
-            //Letras que j· foram usadas
+            //Letras que j√° foram usadas
             for(u = 0; u < MAX; u++) {
             	usadas[u] = letra;
 			}
