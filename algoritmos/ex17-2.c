@@ -38,7 +38,7 @@ int verifica_estrutura(def_arvore arvore) {
 }
 
 //====================
-//FunÁıes de Heap
+//Fun√ß√µes de Heap
 //====================
 
 int verifica_heap_maxima(def_arvore arvore) {
@@ -77,11 +77,11 @@ int verifica_heap(def_arvore arvore) {
 	if(!verifica_estrutura(arvore)) 
 		return 0;
 	if(verifica_heap_maxima(arvore)) {
-		printf("\n… uma Heap M·xima.\n");
+		printf("\n√â uma Heap M√°xima.\n");
 		return 1;
 	}
 	if(verifica_heap_minima(arvore)) {
-		printf("\n… uma Heap MÌnima.\n");
+		printf("\n√â uma Heap M√≠nima.\n");
 		return 1;
 	}
 	return 0;
@@ -108,7 +108,7 @@ int main(){
 		le_arvore(arvore);
 	
 		if(!verifica_heap(arvore))
-			printf("\nN„o È uma Heap.\n");
+			printf("\nN√£o √© uma Heap.\n");
 	}	
 }
 
