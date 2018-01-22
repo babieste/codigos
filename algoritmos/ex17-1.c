@@ -1,5 +1,5 @@
-/* 	¡rvore AVL
-      InserÁ„o, Impress„o e RemoÁ„o
+/* 	√Årvore AVL
+      Inser√ß√£o, Impress√£o e Remo√ß√£o
 */
 
 #include <stdio.h>
@@ -80,13 +80,13 @@ void le_arvore (def_arvore* arvore){
 }
 
 //==================================
-//FunÁıes de verificaÁ„o
+//Fun√ß√µes de verifica√ß√£o
 //==================================
 	
 int verifica_direita(def_arvore arvore, int pai){
 	if (arvore != NULL){
 		if(arvore->info < pai) return 1;
-		return (verifica_direita(arvore->esquerdo, pai) || verifica_direita(arvore->direito, pai)); //DisjunÁ„o LÛgica: 0 || 0 = 0, outras condiÁıes [...] = 1
+		return (verifica_direita(arvore->esquerdo, pai) || verifica_direita(arvore->direito, pai)); //Disjun√ß√£o L√≥gica: 0 || 0 = 0, outras condi√ß√µes [...] = 1
 	}
 	return 0;
 }
