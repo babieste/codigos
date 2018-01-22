@@ -31,7 +31,7 @@ int main () {
 					}	
 				}
 		
-		//Impress„o da matriz
+		//Impress√£o da matriz
 		for (i = 0; i < n; i++) {
     		for (j = 0; j < n; j++)
       			printf ("%3d ",matriz[i][j]);
