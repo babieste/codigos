@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>AngularJS</title>
+</head>
+<body ng-app="lista">
+    <style>
+        .tarefa-finalizada {
+            text-decoration: line-through;
+        }
+    </style>
+
+    <h2>Lista de tarefas</h2>
+
+    <section ng-controller="ListaController">
+        <input type="text" placeholder="Digite a tarefa" ng-model="tarefa">
+        <button ng-click="inserirTarefa(tarefa)">OK</button>
+
+
+        <ul ng-repeat="tarefa in tarefas">
+            <li ng-click="finalizarTarefa(tarefa)" ng-class="{'tarefa-finalizada': tarefa.status == true}"> {{ tarefa.texto }}</li>
+        </ul>
+    </section>
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.7/angular.min.js"></script>
+    <script>
+        const app = angular.module('lista', []);
+
+        app.controller('ListaController', ($scope) => {
+            $scope.tarefas = [];
+
+            $scope.inserirTarefa = (tarefa) => {
+                $scope.tarefas.push({"texto": tarefa, "status": false});
+                $scope.tarefa = '';
+            }
+
+            $scope.finalizarTarefa = (tarefa) => {
+                if(tarefa.status == false)
+                    tarefa.status = true;
+                else
+                    tarefa.status = false;
+            }
+        });
+    </script>
+</body>
+</html>
