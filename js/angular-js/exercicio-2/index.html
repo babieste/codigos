@@ -1,0 +1,40 @@
+<!-- 
+Caso a senha tenha menos que 6 caracteres, exibir
+a mensagem de erro na span e a classe erro no input 
+-->
+
+<html>
+    <head>
+        <title>Exercício 2</title>
+    </head>
+    <body>
+        <style>
+        </style>
+
+        <h3>Exercício 2 - Validação de senha</h3>
+        <p>
+        Caso a senha tenha menos que 6 caracteres, exibir <br>
+        a mensagem de erro na span e a classe erro no input
+        </p>
+
+        <section ng-app="senha">
+            <input type="email" placeholder="Digite seu email">
+            <input type="password" placeholder="Digite sua senha" ng-model="senha">
+
+
+            <p ng-show="senha.length < 6">Senha muito pequena, precisa ter no mínimo 6 caracteres</p>
+            <button>Login</button>
+        </section>
+
+        <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.7/angular.min.js"></script>
+        <script>
+            const app = angular.module('senha', []);
+
+            app.controller = ('SenhaController', ($scope) => {
+                
+
+            });
+
+        </script>
+    </body>
+</html>

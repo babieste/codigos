@@ -1,0 +1,68 @@
+<html>
+    <head>
+        <title>Primeiro Exemplo</title>
+    </head>
+    <body ng-app="exemplos"> <!-- Diretivas são propriedades exclusivas do Angular. "ng-app" é uma diretiva de instanciar módulos -->
+        <style>
+            .quadrado{
+                width: 50px;
+                height: 50px;
+                background-color: red;
+            }
+
+            .quadrado.azul{
+                background-color: blue;
+            }
+        </style>
+
+        <section ng-controller="TesteController"> <!-- "ng-controller" é uma diretiva de instanciar controllers -->
+            <h2>Impressão de variáveis</h2>
+            <p>{{ nome }}</p> <!-- chaves duplas servem para impressão de variáveis no view -->
+
+            <h2>Diretiva NgRepeat</h2>
+            <ul ng-repeat="convidado in convidados">
+                <li>{{ convidado }}</li>
+            </ul>
+
+            <h2>NgClick</h2>
+            <span>{{ cor }}</span>
+            <button ng-click="trocarCor()">Trocar Cor</button>
+
+            <h2>NgClass</h2>
+            <div class="quadrado" ng-class="{'azul': cor == 'Azul'}"></div>
+
+            <h2>NgShow</h2>
+            <p ng-show="cor == 'Azul'">Este meu parágrafo só vai aparecer se a minha variável cor for 'Azul'</p>
+
+            <h2>NgModel</h2> <!-- Diretiva importante: "ng-model" -->
+            <input type="text" placeholder="Digite o seu E-mail" ng-model="email">
+            <input type="text" placeholder="Digite a sua senha" ng-model="senha">
+
+            <p>O seu e-mail é: {{ email }}</p>
+            <p>A sua senha é: {{ senha }}</p>
+        </section>
+
+        <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.7/angular.min.js"></script> <!-- Inicializando o AngularJS -->
+        <script>
+            const app = angular.module('exemplos', []); //Um módulo é como um "container" para partes do código
+
+            
+
+            app.controller('TesteController', ($scope) => { //Todo controller faz parte de um módulo. O controller é como um conjunto de funções
+                $scope.nome = 'Marbs'; //$scope é um objeto "universal" faz referência à toda aplicação
+
+                $scope.convidados = ['Caique', 'Daniel', 'Diandra', 'John'];
+                $scope.cor = 'Azul';
+
+                $scope.trocarCor = () => {
+                    if($scope.cor == 'Vermelho'){
+                        $scope.cor = 'Azul';
+                    }
+                    else{
+                        $scope.cor = 'Vermelho';
+                    }
+                }
+            });
+        </script>
+    </body>
+</html>

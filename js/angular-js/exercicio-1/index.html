@@ -1,0 +1,71 @@
+<!--
+1 - Preencher o tabuleiro com 9 quadrados
+2 - Ao clicar em um quadrado, adcionar/remover a classe ativo
+    Isso fará com que a cor do quadrado seja alterada
+-->
+
+<html>
+    <head>
+        <title></title>
+    </head>
+    <body ng-app="quadrados">
+        <style>
+            section {
+                padding-left: 100px;
+            }
+            
+            .tabuleiro {
+                width: 150px;
+                display: flex;
+                flex-wrap: wrap;
+            }
+
+            .quadrado {
+                width: 48px;
+                height: 48px;
+                border: 1px solid black;
+            }
+
+            .quadrado.ativo{
+                background-color: red;
+            }
+        </style>
+        <h3>Exercício 1 - AngularJS</h3>
+        <ol>
+            <li>Preencher o tabuleiro com 9 quadrados</li>
+            <li>Ao clicar em um quadrado, adicionar/remover a classe ativa</li>
+            <li>Isso fará com que a cor do quadrado seje alterada</li>
+        </ol>
+
+
+        <section class="tabuleiro" ng-controller="QuadradosController">
+            <div class="quadrado"
+            ng-repeat="quadrado in quadrados"
+            ng-click="ativarQuadrado(quadrado)"
+            ng-class="{'ativo': quadrado.status == true}">{{ quadrado.id }}</div>
+        </section>
+    
+        <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.7/angular.min.js"></script>
+        <script>
+            const app = angular.module('quadrados', []);
+
+            app.controller('QuadradosController', ($scope) => {
+                $scope.quadrados = [
+                    {id: 1, status: false},
+                    {id: 2, status: false},
+                    {id: 3, status: false},
+                    {id: 4, status: false},
+                    {id: 5, status: false},
+                    {id: 6, status: false},
+                    {id: 7, status: false},
+                    {id: 8, status: false},
+                    {id: 9, status: false}
+                ];
+
+                $scope.ativarQuadrado = (quadrado) => {
+                    quadrado.status = true;
+                }
+            });
+        </script>
+    </body>
+</html>

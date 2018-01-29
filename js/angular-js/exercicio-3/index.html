@@ -1,0 +1,54 @@
+<html>
+    <head>
+        <title>Exercício 3</title>
+    </head>
+    <body ng-app="lista" ng-controller="ListaController">
+        <style>
+            input {
+                width: 500px;
+                height: 30px;
+            }
+
+            button {
+                height: 30px;
+            }
+
+            .feita{
+                text-decoration: line-through;
+            }
+        </style>
+
+        <h3>Exercício 3 - Lista de Tarefas</h3>
+
+        <section>
+            <input type="text" placeholder="Digite a tarefa" ng-model="tarefa">
+            <button ng-click="criarTarefa(tarefa)">Criar</button>
+
+
+            <ul ng-repeat="tarefa in tarefas">
+                <li ng-click="fazerTarefa(tarefa)" ng-class="{'feita': tarefa.status == true}">{{ tarefa.texto }}</li>
+            </ul>
+        </section>
+
+
+        <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.7/angular.min.js"></script>
+        <script>
+            const app = angular.module('lista', []);
+
+            app.controller('ListaController', ($scope) => {
+                $scope.tarefas = [];
+
+                $scope.criarTarefa = (tarefa) => {
+                    $scope.tarefas.push({"texto": tarefa, "status": false});
+                }
+
+                $scope.fazerTarefa = (tarefa) => {
+                    if(tarefa.status == false)
+                        tarefa.status = true;
+                    else
+                        tarefa.status = false;
+                }
+            });
+        </script>
+    </body>
+</html>
