@@ -67,7 +67,21 @@ class Arvore {
 			vetorDeInsercao[ponteiroDeInsercao] = no;
 			ponteiroDeInsercao++;
 		}
-		
+
+		No *rotacaoAEsquerda(No *no) {
+			No *subarvoreDireita = no->getDir();
+			no->setDir(subarvoreDireita->getEsq());
+			subarvoreDireita->setEsq(no);
+			return subarvoreDireita;
+		}
+
+		No *rotacaoADireita(No *no) {
+			No *subarvoreEsquerda = no->getEsq();
+			no->setEsq(subarvoreEsquerda->getDir());
+			subarvoreEsquerda->setDir(no);
+			return subarvoreEsquerda;
+		}
+
 		void insereAux(No *no, int valor) {
 			if(valor <= no->getValor()) {
 				if(no->getEsq() == NULL) {
@@ -120,10 +134,12 @@ class Arvore {
 		}
 		
 		void mostraVetorDeInsercao() {
-			int i = 0;
+			int i;
 			for(i = 0; i < ponteiroDeInsercao; i++) {
 				cout << ("\n\n");
-				cout << "[" << i << "]: No " << vetorDeInsercao[i]->getValor() << "\nProfundidade esq: " << vetorDeInsercao[i]->getProfEsq() << "\nProfundidade dir: " << vetorDeInsercao[i]->getProfDir();
+				cout << "[" << i << "]: No " << vetorDeInsercao[i]->getValor();
+				cout << "\nProfundidade esq: " << vetorDeInsercao[i]->getProfEsq();
+				cout << "\nProfundidade dir: " << vetorDeInsercao[i]->getProfDir();
 				cout << "\nDesequilibro: " << vetorDeInsercao[i]->desequilibrio();
 			}
 		}
