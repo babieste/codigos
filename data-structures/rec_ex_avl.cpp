@@ -144,6 +144,18 @@ class Arvore {
 			}
 		}
 		
+		void balanceaArvore() {
+			int i;
+			for(i = 0; i < this->ponteiroDeInsercao; i++) {
+				if(this->vetorDeInsercao[i]->desequilibrio() >= 2) {
+					this->vetorDeInsercao[i] = this->rotacaoAEsquerda(this->vetorDeInsercao[i]);
+				}
+				else if(this->vetorDeInsercao[i]->desequilibrio() <= -2) {
+					this->vetorDeInsercao[i] = this->rotacaoADireita(this->vetorDeInsercao[i]);
+				}
+			}
+		}
+		
 };
 
 int main() {
@@ -161,6 +173,10 @@ int main() {
 
 	cout << "\nVetor de insercao:";
 	arv.mostraVetorDeInsercao();
+
+	arv.balanceaArvore();
+	cout << "\n\nArvore apos balanceamento: ";
+	arv.emOrdem(arv.getRaiz());
 	
 	return 0;
 }
