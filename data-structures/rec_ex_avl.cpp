@@ -155,7 +155,7 @@ class Arvore {
 				}
 			}
 		}
-		
+
 };
 
 int main() {
