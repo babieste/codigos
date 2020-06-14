@@ -1,24 +1,49 @@
 package classes;
 
 public class Empresa {
-    private int quantidadeFuncionarios = 2;
-    private BaseColaborador[] funcionarios;
+    private int quantidadeColaboradores = 0;
+    private BaseColaborador[] colaboradores;
 
     public Empresa() {
-        this.funcionarios = new BaseColaborador[100];
-        this.funcionarios[0] = new Estagiario("Barbara", 1, 1000, 4.50);
-        this.funcionarios[1] = new Presidente("Mulher mainframe", 0, 32.600);
+        this.colaboradores = new BaseColaborador[100];
+    }
+
+    public int adicionaColaborador(String nome, int departamento, double salario) {
+        if ((this.quantidadeColaboradores + 1) <= 100) {
+            this.quantidadeColaboradores += 1;
+            this.colaboradores[this.quantidadeColaboradores] = new Presidente(nome, departamento, salario);
+            return 1;
+        }
+        return 0;
+    }
+
+    public int adicionaColaborador(String nome, int departamento, double salario, double valecoxinha) {
+        if ((this.quantidadeColaboradores + 1) <= 100) {
+            this.quantidadeColaboradores += 1;
+            this.colaboradores[this.quantidadeColaboradores] = new Estagiario(nome, departamento, salario, valecoxinha);
+            return 1;
+        }
+        return 0;
+    }
+
+    public int adicionaColaborador(String nome, int departamento, double salario, double adicional, double previdencia) {
+        if ((this.quantidadeColaboradores + 1) <= 100) {
+            this.quantidadeColaboradores += 1;
+            this.colaboradores[this.quantidadeColaboradores] = new Funcionario(nome, departamento, salario, adicional, previdencia);
+            return 1;
+        }
+        return 0;
     }
 
     /**
-     * Aumenta o adicional dos funcionarios da empresa.
+     * Aumenta o adicional dos colaboradores da empresa.
      * @param novo_percentual
      */
     public void aumentaAdicional(double novo_percentual) {
         int i;
-        for (i = 0; i < this.quantidadeFuncionarios; i++) {
-            if (this.funcionarios[i] instanceof Funcionario) {
-                ((Funcionario) this.funcionarios[i]).setAdicional(novo_percentual);
+        for (i = 0; i < this.quantidadeColaboradores; i++) {
+            if (this.colaboradores[i] instanceof Funcionario) {
+                ((Funcionario) this.colaboradores[i]).setAdicional(novo_percentual);
             }
         }
     }
@@ -28,8 +53,8 @@ public class Empresa {
      */
     public void relatorio() {
         int i;
-        for (i = 0; i < this.quantidadeFuncionarios; i++) {
-            System.out.println(this.funcionarios[i]);
+        for (i = 0; i < this.quantidadeColaboradores; i++) {
+            System.out.println(this.colaboradores[i]);
         }
     }
 }

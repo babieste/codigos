@@ -10,7 +10,7 @@ public class Presidente extends Funcionario {
      * @param salario
      */
     public Presidente( String nome, int departamento, double salario) {
-        super(nome, departamento, salario, 3.8);
+        super(nome, departamento, salario, 3.8, 0.05);
         this.adicional_whisky = 0.9;
         this.adicional_helicoptero = 0.7;
     }

@@ -1,11 +1,19 @@
 package classes;
 
 public class Funcionario extends BaseColaborador {
-    private double previdencia = 0.05, adicional;
+    private double previdencia, adicional;
 
-    public Funcionario(String nome, int departamento, double salario, double adicional) {
+    /**
+     * Instancia um Funcionario.
+     * @param nome
+     * @param departamento
+     * @param salario
+     * @param adicional
+     */
+    public Funcionario(String nome, int departamento, double salario, double adicional, double previdencia) {
         super(nome, departamento, salario);
         this.adicional = adicional;
+        this.previdencia = previdencia;
     }
 
     @Override
