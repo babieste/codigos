@@ -1,3 +1,19 @@
+/*
+
+Entrega de trabalho - Sistema Empresa XYZ
+
+Eu,
+
+Barbara Este Fernandez,
+
+declaro que
+
+todas as respostas sao fruto de meu proprio trabalho,
+nao copiei respostas de colegas externos a equipe,
+nao disponibilizei nossas respostas para colegas externos a equipe e
+nao realizei quaisquer outras atividades desonestas para me beneficiar ou prejudicar outros.
+*/
+
 import classes.*;
 
 import java.util.Locale;
@@ -16,7 +32,7 @@ class Main {
             do {
                 System.out.println("\n--- MENU PRINCIPAL ---");
                 System.out.println("1 - Adicionar Colaborador (Estagiario, Funcionario ou Presidente)");
-                System.out.println("2 - Calcular pagamento dos Funcionarios");
+                System.out.println("2 - Calcular pagamento de um Colaborador");
                 System.out.println("3 - Aumentar adicional de todos os Funcionarios");
                 System.out.println("4 - Relatorio dos Colabores");
                 System.out.println("5 - Sair do Programa");
@@ -37,10 +53,12 @@ class Main {
                     menuAdicionarColaborador(s, empresa);
                     break;
 
-                case 2: // Calcular pagamento dos Funcionarios
+                case 2: // Calcular pagamento de um Colaborador
+                    menuCalcularPagamento(s, empresa);
                     break;
 
                 case 3: // Aumentar adicional dos Funcionarios
+                    menuAumentarAdicional(s, empresa);
                     break;
 
                 case 4: // Relatorio
@@ -234,4 +252,60 @@ class Main {
         if (empresa.adicionaColaborador(nome, departamento, salario) == 1) System.out.println("--- Presidente adicionado com sucesso! ---");
         else System.out.println("--- Nao foi possivel adicionar novo Presidente. Limite de funcionarios excedido. ---");
     }
+
+    public static void menuAumentarAdicional(Scanner s, Empresa empresa) {
+        String input;
+        double novo_percentual = -1;
+
+        if ((empresa.quantidadeColaboradores() == 0) || (empresa.quantidadeFuncionarios() == 0)) {
+            System.out.println("Nao ha colaboradores com permissao de adicional!");
+        } else {
+            do {
+                System.out.println("\n--- MENU AUMENTAR ADICIONAL ---");
+                System.out.print("\nDigite o novo percentual: ");
+                input = s.nextLine();
+
+                try {
+                    novo_percentual = Double.parseDouble(input);
+                } catch (NumberFormatException e) {
+                    System.out.println("Digite um numero inteiro ou decimal com ponto.");
+                    novo_percentual = -1;
+                }
+            } while (novo_percentual == -1);
+
+            empresa.aumentaAdicional(novo_percentual);
+            System.out.println("\n--- Adicional aumentado com sucesso!---");
+        }
+    }
+
+    public static void menuCalcularPagamento(Scanner s, Empresa empresa) {
+        String input;
+        int idColaborador = -1;
+        double pagamentoColaborador = -1;
+
+        if (empresa.quantidadeColaboradores() == 0) System.out.println("Nao ha colaboradores!");
+        else {
+            do {
+                System.out.println("\n--- MENU CALCULAR PAGAMENTO ---");
+                System.out.print("\nDigite o ID do Colaborador (0 a " + (empresa.quantidadeColaboradores()-1) + "): ");
+                input = s.nextLine();
+
+                try {
+                    idColaborador = Integer.parseInt(input);
+                } catch (NumberFormatException e) {
+                    System.out.println("Digite um numero inteiro.");
+                    idColaborador = -1;
+                }
+
+                if ((idColaborador < 0) || (idColaborador > (empresa.quantidadeColaboradores()-1))) {
+                    System.out.println("Nao existe colaborador com esse ID. Tente novamente!");
+                    idColaborador = -1;
+                } else {
+                    pagamentoColaborador = empresa.calcularPagamento(idColaborador);
+                    System.out.println("Pagamento de " + pagamentoColaborador + " reais efetuado a colaborador de ID " + idColaborador + "!");
+                }
+            } while (idColaborador == -1);
+        }
+    }
+
 }
