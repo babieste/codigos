@@ -44,6 +44,7 @@ class Main {
                     break;
 
                 case 4: // Relatorio
+                    empresa.relatorio();
                     break;
 
                 case 5: // Sair do programa
@@ -59,6 +60,7 @@ class Main {
         int menuChoice = 0;
 
         do {
+            System.out.println("\n--- MENU ADICIONAR COLABORADOR ---");
             System.out.println("\nQual o tipo de colaborador?");
             System.out.println("1 - Estagiario");
             System.out.println("2 - Funcionario");

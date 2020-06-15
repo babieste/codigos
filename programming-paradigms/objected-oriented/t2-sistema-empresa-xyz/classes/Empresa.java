@@ -41,9 +41,9 @@ public class Empresa {
      */
     public void aumentaAdicional(double novo_percentual) {
         int i;
-        for (i = 0; i < this.quantidadeColaboradores; i++) {
-            if (this.colaboradores[i] instanceof Funcionario) {
-                ((Funcionario) this.colaboradores[i]).setAdicional(novo_percentual);
+        for (i = 0; i <= this.quantidadeColaboradores; i++) {
+            if (this.colaboradores[i-1] instanceof Funcionario) {
+                ((Funcionario) this.colaboradores[i-1]).setAdicional(novo_percentual);
             }
         }
     }
@@ -53,8 +53,11 @@ public class Empresa {
      */
     public void relatorio() {
         int i;
-        for (i = 0; i < this.quantidadeColaboradores; i++) {
-            System.out.println(this.colaboradores[i]);
+        if (this.quantidadeColaboradores == 0) System.out.println("Nao ha colaboradores!");
+        else {
+            for (i = 0; i <= this.quantidadeColaboradores; i++) {
+                System.out.println(this.colaboradores[i-1]);
+            }
         }
     }
 }
