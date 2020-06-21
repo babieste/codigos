@@ -18,4 +18,7 @@ verifyTriangleAux a b c
     | otherwise = "Isosceles"
 
 -- Verifica se os 3 valores por input foram um triangulo de Pitagoras ou nao
-verifyPitagoras a b c = if a^2 + b^2 == c^2 || a^2 + c^2 == b^2 || b^2 + c^2 == a^2 then "Eh uma tripla de Pitagoras" else "Nao eh uma tripla de Pitagoras"
+verifyPitagoras a b c =
+    if a^2 + b^2 == c^2 || a^2 + c^2 == b^2 || b^2 + c^2 == a^2
+    then "Eh uma tripla de Pitagoras"
+    else "Nao eh uma tripla de Pitagoras"
