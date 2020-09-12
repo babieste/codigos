@@ -55,7 +55,7 @@ int main() {
     // displayMatrix(matrix_size, result);
           
     gettimeofday(&tv, NULL);
-    start_t = (double) tv.tv_sec + (double)tv.tv_usec / 1000000.0;
+    start_t = (double) tv.tv_sec + (double) tv.tv_usec / 1000000.0;
   
     multiplyMatrix(matrix_size, matrixA, matrixB, result);
 
