@@ -61,13 +61,13 @@ int main() {
     // displayMatrix(matrix_size, matrixB);
           
     gettimeofday(&tv, NULL);
-    start_t = (double) (tv.tv_sec*1000.0) + (double) (tv.tv_usec / 1000.0); // start time in microseconds
+    start_t = (double) (tv.tv_sec*1000.0) + (double) (tv.tv_usec / 1000.0); // start time in miliseconds
   
     multiplyMatrix(matrix_size, matrixA, matrixB, result);
     // multiplyMatrixWithCacheOp(matrix_size, matrixA, matrixB, result)
 
     gettimeofday(&tv,NULL); 
-    end_t = (double) (tv.tv_sec*1000.0) + (double) (tv.tv_usec / 1000.0); // end time in microseconds
+    end_t = (double) (tv.tv_sec*1000.0) + (double) (tv.tv_usec / 1000.0); // end time in miliseconds
     time_delta = end_t - start_t;
     printf("\nProgram execution time: %f ms\n", time_delta);
 
